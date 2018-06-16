@@ -1,8 +1,12 @@
-def load_vec(file_path):
+def load_test(path):
     pass
 
-def load_test():
+
+def load_train(path):
     pass
 
-def load_train():
+def load_unlabel_train(path):
+    pass
+
+def dump_submission(result):
     pass
