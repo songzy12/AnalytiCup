@@ -1,4 +1,6 @@
-from util import load_train, load_test, load_unlabel_train, dump_submission
+import pandas
+
+from util import dump_submission
 from feature import get_feature
 from model import train_model
 
@@ -10,12 +12,12 @@ en_vec_path = '../input/wiki.en.vec'
 es_vec_path = '../input/wiki.es.vec'
 
 if __name__ == '__main__':
-    english_train_x, english_train_y = load_train(english_train_path)
-    spanish_train_x, spanish_train_y = load_train(spanish_train_path)
-    unlabel_spanish_train_path = load_unlabel_train(unlabel_spanish_train_path)
-    spanish_test_x = load_test(test_path)
-    english_train_feature = get_feature(english_train_x)
-    test_feature = get_feature(spanish_test_x)
-    model = train_model(english_train_feature, english_train_y)
-    result = model.predict(test_feature)
+    df_en_train = pandas.read_csv(english_train_path, sep='\t', names=['en0', 'es0', 'en1', 'es1', 'label'])
+    df_es_train = pandas.read_csv(spanish_train_path, sep='\t', names=['es0', 'en0', 'es1', 'en1', 'label'])
+    df_es2en = pandas.read_csv(unlabel_spanish_train_path, sep='\t', names=['es', 'en'])
+    df_test = pandas.read_csv(test_path, sep='\t', names=['es0', 'es1'])
+    feature_train_es = get_feature(df_es_train.get(['es0', 'es1']))
+    feature_test_es = get_feature(df_test)
+    model = train_model(feature_train_es, df_en_train.get('label'))
+    result = model.predict(feature_test_es)
     dump_submission(result)
