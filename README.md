@@ -6,6 +6,13 @@
 
 ##Jupyter Notebook 
 
+```
+from IPython.core.interactiveshell import InteractiveShell
+InteractiveShell.ast_node_interactivity = "all"
+```
+
+
+
 <https://blog.csdn.net/lawme/article/details/51034543>
 
 - **Shift-Enter** : 运行本单元，选中下个单元
