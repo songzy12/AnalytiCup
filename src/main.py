@@ -1,7 +1,6 @@
 import pandas as pd
 import numpy as np
 
-from util import dump_submission
 from feature import get_feature, get_tokenizer
 from model import train_model
 from config import english_train_path, spanish_train_path, unlabel_spanish_train_path, test_path
@@ -15,8 +14,14 @@ if __name__ == '__main__':
 
     tokenizer = get_tokenizer([df_es_train['es0'], df_es_train['es1'], df_test['es0'], df_test['es1']])    
 
-    feature_train_es = get_feature(df_es_train, tokenizer)
-    model = train_model(feature_train_es, df_es_train.get('label'))
-    feature_test_es = get_feature(df_test, tokenizer)
-    result = model.predict(feature_test_es)
-    dump_submission(result)
+    df_es_train = get_feature(df_es_train, tokenizer)
+
+    predictors = ['word2vec_dot']
+    best_model,best_iteration = train_model(df_es_train, predictors)
+    
+    feature_test = get_feature(df_test, tokenizer)   
+    sub = pd.DataFrame()
+    sub['result'] = best_model.predict(feature_test[predictors],num_iteration=best_iteration)
+    
+    sub.to_csv('../output/submission.csv',index=False,header=False,float_format='%.9f')
+    print('done.')

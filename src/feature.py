@@ -41,5 +41,4 @@ def get_vec_feature(df, tokenizer):
 
 def get_feature(df, tokenizer):
     df = get_vec_feature(df, tokenizer)
-    features = ['word2vec_dot']
-    return df.get(features)
+    return df
