@@ -23,5 +23,5 @@ if __name__ == '__main__':
     sub = pd.DataFrame()
     sub['result'] = best_model.predict(feature_test[predictors],num_iteration=best_iteration)
     
-    sub.to_csv('../output/submission.csv',index=False,header=False,float_format='%.9f')
+    sub.to_csv('../output/submission.txt',index=False,header=False,float_format='%.9f')
     print('done.')
