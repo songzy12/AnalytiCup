@@ -1,7 +1,7 @@
 import lightgbm as lgb
 import gc
 
-def lgb_modelfit_nocv(params, dtrain, dvalid, predictors, target='label', objective='binary', metrics='auc',
+def lgb_modelfit_nocv(params, dtrain, dvalid, predictors, target='label', objective='binary', metrics='binary_logloss',
                  feval=None, early_stopping_rounds=50, num_boost_round=3000, verbose_eval=10, categorical_features=None):
     lgb_params = {
         'boosting_type': 'gbdt',
@@ -83,7 +83,7 @@ def train_model(df, predictors):
                             df[1200:], 
                             predictors, 
                             objective='binary', 
-                            metrics='auc',
+                            metrics='binary_logloss',
                             early_stopping_rounds=30, 
                             verbose_eval=True, 
                             num_boost_round=1000)

@@ -1,3 +1,21 @@
+## Workflow
+
+### 07-02
+
+简单跑通了整个流程，
+
+数据方面只使用了 es 相关的部分，
+
+特征方面只是用了 word2vec 的dot 一个特征，
+
+模型方面使用 LightGBM，
+
+logloss 为 0.62227，排名为 150.
+
+### 07-03
+
+
+
 ## References
 
 <https://zhuanlan.zhihu.com/p/35093355>
