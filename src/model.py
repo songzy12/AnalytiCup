@@ -7,20 +7,19 @@ def lgb_modelfit_nocv(params, dtrain, dvalid, predictors, target='label', object
         'boosting_type': 'gbdt',
         'objective': objective,
         'metric':metrics,
-        'learning_rate': 0.04,
+        'learning_rate': 0.001,
         #'is_unbalance': 'true',  #because training data is unbalance (replaced with scale_pos_weight)
-        'num_leaves': 31,  # we should let it be smaller than 2^(max_depth)
+        'num_leaves': 63,  # we should let it be smaller than 2^(max_depth)
         'max_depth': -1,  # -1 means no limit
-        'min_child_samples': 20,  # Minimum number of data need in a child(min_data_in_leaf)
+        'min_child_samples': 5,  # Minimum number of data need in a child(min_data_in_leaf)
         'max_bin': 255,  # Number of bucketed bin for feature values
-        'subsample': 0.6,  # Subsample ratio of the training instance.
-        'subsample_freq': 0,  # frequence of subsample, <=0 means no enable
-        'colsample_bytree': 0.3,  # Subsample ratio of columns when constructing each tree.
-        'min_child_weight': 5,  # Minimum sum of instance weight(hessian) needed in a child(leaf)
+        'subsample': 0.9,  # Subsample ratio of the training instance.
+        'subsample_freq': 10,  # frequence of subsample, <=0 means no enable
+        'colsample_bytree': 0.8,  # Subsample ratio of columns when constructing each tree.
         'subsample_for_bin': 200000,  # Number of samples for constructing bin
         'min_split_gain': 0,  # lambda_l1, lambda_l2 and min_gain_to_split to regularization
-        'reg_alpha': 0.99,  # L1 regularization term on weights
-        'reg_lambda': 0.9,  # L2 regularization term on weights
+        'reg_alpha': 0.5,  # L1 regularization term on weights
+        'reg_lambda': 0.5,  # L2 regularization term on weights
         'nthread': 8,
         'verbose': 1,
     }
@@ -61,21 +60,7 @@ def lgb_modelfit_nocv(params, dtrain, dvalid, predictors, target='label', object
 
 def train_model(df, predictors):
     params = {
-        'learning_rate': 0.04,
-        #'is_unbalance': 'true', # replaced with scale_pos_weight argument
-        'num_leaves': 31,  # 2^max_depth - 1
-        'max_depth': -1,  # -1 means no limit
-        'min_child_samples': 20,  # Minimum number of data need in a child(min_data_in_leaf)
-        'max_bin': 255,  # Number of bucketed bin for feature values
-        'subsample': 0.6,  # Subsample ratio of the training instance.
-        'subsample_freq': 0,  # frequence of subsample, <=0 means no enable
-        'colsample_bytree': 0.3,  # Subsample ratio of columns when constructing each tree.
-        'min_child_weight': 5,  # Minimum sum of instance weight(hessian) needed in a child(leaf)
-        'subsample_for_bin': 200000,  # Number of samples for constructing bin
-        'min_split_gain': 0,  # lambda_l1, lambda_l2 and min_gain_to_split to regularization
-        'reg_alpha': 0.99,  # L1 regularization term on weights
-        'reg_lambda': 0.9,  # L2 regularization term on weights
-        'scale_pos_weight':200 # because training data is extremely unbalanced 
+        'scale_pos_weight':5 # because training data is extremely unbalanced 
     }
 
     (bst,best_iteration) = lgb_modelfit_nocv(params, 
@@ -86,5 +71,5 @@ def train_model(df, predictors):
                             metrics='binary_logloss',
                             early_stopping_rounds=30, 
                             verbose_eval=True, 
-                            num_boost_round=1000)
+                            num_boost_round=10000)
     return bst,best_iteration

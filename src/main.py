@@ -16,7 +16,10 @@ if __name__ == '__main__':
 
     df_es_train = get_feature(df_es_train, tokenizer)
 
-    predictors = ['word2vec_dot']
+    predictors = ['word2vec_dot'] + ['word2vec_minkowski_'+str(i) for i in range(1,3)] + \
+                 ['ratio', 'partial_ratio', 'token_sort_ratio', 'token_set_ratio'] + \
+                 ['jaccard']
+                 
     best_model,best_iteration = train_model(df_es_train, predictors)
     
     feature_test = get_feature(df_test, tokenizer)   
