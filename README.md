@@ -14,7 +14,24 @@ logloss 为 0.62227，排名为 150.
 
 ### 07-03
 
+然后多加了几个特征之后效果不升反降？
 
+* word2vec_minkowski_1 
+* word2vec_minkowski_2
+* ratio
+* partial_ratio 
+* token_sort_ratio 
+* token_set_ratio 
+* jaccard
+logloss 为 0.64559
+
+###07-04
+
+简单调了一下 LightGBM 的参数：
+
+logloss 为 0.56064，排名为 122.
+
+### 07-05
 
 ## References
 
