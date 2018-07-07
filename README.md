@@ -31,7 +31,9 @@ logloss 为 0.64559
 
 logloss 为 0.56064，排名为 122.
 
-### 07-05
+### 07-07
+
+添加了 keras-quora-question-pairs 的神经网络模型。
 
 ## References
 
