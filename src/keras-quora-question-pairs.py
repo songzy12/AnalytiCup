@@ -42,11 +42,12 @@ if __name__ == '__main__':
     df_es2en = pd.read_csv(unlabel_spanish_train_path, sep='\t', names=['es', 'en'])
     df_test = pd.read_csv(test_path, sep='\t', names=['es0', 'es1'])
 
-    question1 = df_en_train['es0']
-    question2 = df_en_train['es1']
+    df_train = pd.concat([df_en_train, df_es_train], ignore_index=True)
+    question1 = df_train['es0']
+    question2 = df_train['es1']
     test1 = df_test['es0']
     test2 = df_test['es1']
-    is_duplicate = df_en_train['label']
+    is_duplicate = df_train['label']
 
     print('Question pairs: %d' % len(question1))
 
@@ -169,10 +170,6 @@ if __name__ == '__main__':
     print('Test loss = {0:.4f}, test accuracy = {1:.4f}'.format(loss, accuracy))
     result = model.predict([test1_data, test2_data])
 
-    import code
-    code.interact(local=locals())
-
     sub = pd.DataFrame(result)
-    
     sub.to_csv('../output/quora-submission.txt',index=False,header=False,float_format='%.9f')
     print('done.')

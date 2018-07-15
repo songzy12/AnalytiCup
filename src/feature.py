@@ -35,8 +35,8 @@ def get_feature_vec(df, tokenizer):
         embedding_vector = embeddings_index.get(word)
         if embedding_vector is not None: embedding_matrix[i] = embedding_vector
 
-    df['word2vec_es0'] = [sum([embedding_matrix[x] if (x < len(embedding_matrix)) else emb_mean for x in data ])/len(data) for data in df['seq_es0']]
-    df['word2vec_es1'] = [sum([embedding_matrix[x] if (x < len(embedding_matrix)) else emb_mean for x in data ])/len(data) for data in df['seq_es1']]
+    df['word2vec_es0'] = [sum([embedding_matrix[x] for x in data])/len(data) if data else np.random.normal(emb_mean, emb_std, (embed_size)) for data in df['seq_es0']]
+    df['word2vec_es1'] = [sum([embedding_matrix[x] for x in data])/len(data) if data else np.random.normal(emb_mean, emb_std, (embed_size)) for data in df['seq_es1']]
 
     def dot(row):
         return row['word2vec_es0'].dot(row['word2vec_es1'])/(row['word2vec_es0'].dot(row['word2vec_es0'])**0.5 * row['word2vec_es1'].dot(row['word2vec_es1'])**0.5)

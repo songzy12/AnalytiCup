@@ -12,15 +12,17 @@ if __name__ == '__main__':
     df_es2en = pd.read_csv(unlabel_spanish_train_path, sep='\t', names=['es', 'en'])
     df_test = pd.read_csv(test_path, sep='\t', names=['es0', 'es1'])
 
-    tokenizer = get_tokenizer([df_es_train['es0'], df_es_train['es1'], df_test['es0'], df_test['es1']])    
+    df_train = pd.concat([df_es_train, df_en_train], ignore_index=True)
 
-    df_es_train = get_feature(df_es_train, tokenizer)
+    tokenizer = get_tokenizer([df_train['es0'], df_train['es1'], df_test['es0'], df_test['es1']])    
+
+    df_train = get_feature(df_train, tokenizer)
 
     predictors = ['word2vec_dot'] + ['word2vec_minkowski_'+str(i) for i in range(1,3)] + \
                  ['ratio', 'partial_ratio', 'token_sort_ratio', 'token_set_ratio'] + \
                  ['jaccard']
                  
-    best_model,best_iteration = train_model(df_es_train, predictors)
+    best_model,best_iteration = train_model(df_train, predictors)
     
     feature_test = get_feature(df_test, tokenizer)   
     sub = pd.DataFrame()
