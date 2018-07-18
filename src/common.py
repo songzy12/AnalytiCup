@@ -6,6 +6,6 @@ test_path = '../input/cikm_test_a_20180516.txt'
 en_vec_path = '../input/wiki.en.vec'
 es_vec_path = '../input/wiki.es.vec'
 
-embed_size = 512 
+embed_size = 300 
 max_features = 5000
 maxlen = 54
