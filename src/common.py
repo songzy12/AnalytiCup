@@ -7,5 +7,5 @@ en_vec_path = '../input/wiki.en.vec'
 es_vec_path = '../input/wiki.es.vec'
 
 embed_size = 300 
-max_features = 5000
+max_features = 6000
 maxlen = 54

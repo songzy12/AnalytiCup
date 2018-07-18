@@ -7,12 +7,12 @@ def lgb_modelfit_nocv(params, dtrain, dvalid, predictors, target='label', object
     # parameters: https://github.com/Microsoft/LightGBM/blob/master/docs/Experiments.rst
     # https://github.com/Microsoft/LightGBM/blob/master/docs/Parameters.rst
     lgb_params = {
-        'boosting_type': 'gbdt',
+        'boosting_type': 'dart',
         'objective': objective,
         'metric': metrics,
         'learning_rate': 0.001,
         #'is_unbalance': 'true',  #because training data is unbalance (replaced with scale_pos_weight)
-        'num_leaves': 63,  # we should let it be smaller than 2^(max_depth)
+        'num_leaves': 15,  # we should let it be smaller than 2^(max_depth)
         'max_depth': -1,  # -1 means no limit
         # Minimum number of data need in a child(min_data_in_leaf)
         'min_child_samples': 5,
@@ -22,8 +22,8 @@ def lgb_modelfit_nocv(params, dtrain, dvalid, predictors, target='label', object
         'colsample_bytree': 0.8,
         'subsample_for_bin': 200000,  # Number of samples for constructing bin
         'min_split_gain': 0,  # lambda_l1, lambda_l2 and min_gain_to_split to regularization
-        'reg_alpha': 0.1,  # L1 regularization term on weights
-        'reg_lambda': 0.1,  # L2 regularization term on weights
+        'reg_alpha': 0.01,  # L1 regularization term on weights
+        'reg_lambda': 0.01,  # L2 regularization term on weights
         'nthread': 16,
         'verbose': 1,
     }
