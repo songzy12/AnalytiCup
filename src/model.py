@@ -7,7 +7,7 @@ def lgb_modelfit_nocv(params, dtrain, dvalid, predictors, target='label', object
     # parameters: https://github.com/Microsoft/LightGBM/blob/master/docs/Experiments.rst
     # https://github.com/Microsoft/LightGBM/blob/master/docs/Parameters.rst
     lgb_params = {
-        'boosting_type': 'dart',
+        'boosting_type': 'gbdt',
         'objective': objective,
         'metric': metrics,
         'learning_rate': 0.001,
