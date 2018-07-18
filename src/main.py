@@ -14,6 +14,10 @@ if __name__ == '__main__':
 
     df_train = pd.concat([df_es_train, df_en_train], ignore_index=True)
 
+    for df in [df_train, df_test]:
+        df['es0'] = df.apply(lambda row: row['es0'].replace('¡', '¡ '), axis=1)
+        df['es1'] = df.apply(lambda row: row['es1'].replace('¿', '¿ '), axis=1)
+
     tokenizer = get_tokenizer([df_train['es0'], df_train['es1'], df_test['es0'], df_test['es1']])    
 
     df_train = get_feature(df_train, tokenizer)
