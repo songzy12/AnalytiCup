@@ -2,6 +2,8 @@
 .idea
 input/
 output/
+*.ipynb
+*.h5
 *.swp
 *.csv
 *.pyc
