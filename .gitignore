@@ -1,5 +1,6 @@
 .ipynb_checkpoints
 .idea
+config.py
 input/
 output/
 *.swp

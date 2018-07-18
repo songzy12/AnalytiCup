@@ -6,7 +6,7 @@ from keras.preprocessing.text import Tokenizer
 
 from fuzzywuzzy import fuzz
 
-from config import en_vec_path, es_vec_path, embed_size, max_features, maxlen
+from common import en_vec_path, es_vec_path, embed_size, max_features, maxlen
 
 
     

@@ -3,7 +3,7 @@ import numpy as np
 
 from feature import get_feature, get_tokenizer
 from model import train_model
-from config import english_train_path, spanish_train_path, unlabel_spanish_train_path, test_path
+from common import english_train_path, spanish_train_path, unlabel_spanish_train_path, test_path
 
 if __name__ == '__main__':
     df_en_train = pd.read_csv(english_train_path, sep='\t', names=['en0', 'es0', 'en1', 'es1', 'label'])

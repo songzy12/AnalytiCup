@@ -15,8 +15,8 @@ from keras.utils.data_utils import get_file
 from keras import backend as K
 from sklearn.model_selection import train_test_split
 
-from config import english_train_path, spanish_train_path, unlabel_spanish_train_path, test_path
-from config import en_vec_path, es_vec_path, embed_size, max_features, maxlen
+from common import english_train_path, spanish_train_path, unlabel_spanish_train_path, test_path
+from common import en_vec_path, es_vec_path, embed_size, max_features, maxlen
 
 # Initialize global variables
 
