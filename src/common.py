@@ -7,6 +7,6 @@ en_vec_path = '../input/wiki.en.vec'
 es_vec_path = '../input/wiki.es.vec'
 
 # TODO: tune this
-embed_size = 300 
+embed_size = 300
 max_features = 3000
 maxlen = 100

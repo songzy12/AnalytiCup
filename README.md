@@ -58,6 +58,8 @@ logloss 为 0.63559.
 
 * log to file
 
+* feature importance
+
 * translation
 
 * more features
