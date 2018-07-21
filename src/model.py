@@ -70,8 +70,8 @@ def train_model(df, predictors):
     }
 
     (bst, best_iteration) = lgb_modelfit_nocv(params,
-                                              df[:1200],
-                                              df[1200:],
+                                              df[:20000],
+                                              df[20000:],
                                               predictors,
                                               objective='binary',
                                               metrics='binary_logloss',
