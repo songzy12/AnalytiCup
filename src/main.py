@@ -38,7 +38,7 @@ if __name__ == '__main__':
 
     predictors = ['word2vec_dot'] + ['word2vec_minkowski_' + str(i) for i in range(1, 3)] + \
                  ['ratio', 'partial_ratio', 'token_sort_ratio', 'token_set_ratio'] + \
-                 ['jaccard']
+                 ['jaccard'] + ['edit_distance'] + ['wmd']
 
     best_model, best_iteration = train_model(df_train, predictors)
 

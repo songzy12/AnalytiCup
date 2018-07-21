@@ -5,8 +5,13 @@ import pandas as pd
 from keras.preprocessing.text import Tokenizer
 
 from fuzzywuzzy import fuzz
+import editdistance 
 
 from common import en_vec_path, es_vec_path, embed_size, max_features, maxlen
+
+import gensim
+
+word2vec_model = gensim.models.KeyedVectors.load_word2vec_format('../input/wiki.es.vec')
 
 
 def get_coefs(word, *arr): return word, np.asarray(arr, dtype='float32')
@@ -64,6 +69,9 @@ def get_feature_vec(df, tokenizer):
     for i in range(1, 3):
         df['word2vec_minkowski_' + str(i)] = df.apply(lambda row: minkowski_distance(
             row['word2vec_es1'], row['word2vec_es0'], i), axis=1)
+    
+    df['wmd'] = df.apply(lambda row: word2vec_model.wmdistance(
+        row['es0'].split(), row['es1'].split()), axis=1)
 
     return df
 
@@ -76,6 +84,8 @@ def get_feature_edit_distance(df):
     df['token_sort_ratio'] = df.apply(lambda row: fuzz.token_sort_ratio(row[
                                       'seq_es0'], row['seq_es1']), axis=1)
     df['token_set_ratio'] = df.apply(lambda row: fuzz.token_set_ratio(row[
+                                     'seq_es0'], row['seq_es1']), axis=1)
+    df['edit_distance'] = df.apply(lambda row: editdistance.eval(row[
                                      'seq_es0'], row['seq_es1']), axis=1)
     return df
 
