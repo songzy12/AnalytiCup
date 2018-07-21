@@ -7,23 +7,13 @@ def lgb_modelfit_nocv(params, dtrain, dvalid, predictors, target='label', object
     # parameters: https://github.com/Microsoft/LightGBM/blob/master/docs/Experiments.rst
     # https://github.com/Microsoft/LightGBM/blob/master/docs/Parameters.rst
     lgb_params = {
-        'boosting_type': 'gbdt',
         'objective': objective,
         'metric': metrics,
+        'boosting_type': 'gbdt',
         'learning_rate': 0.001,
-        #'is_unbalance': 'true',  #because training data is unbalance (replaced with scale_pos_weight)
-        'num_leaves': 15,  # we should let it be smaller than 2^(max_depth)
-        'max_depth': -1,  # -1 means no limit
-        # Minimum number of data need in a child(min_data_in_leaf)
-        'min_child_samples': 5,
+        'num_leaves': 63,  # we should let it be smaller than 2^(max_depth)
         'max_bin': 65535,  # Number of bucketed bin for feature values
-        'subsample': 0.9,  # Subsample ratio of the training instance.
-        # Subsample ratio of columns when constructing each tree.
-        'colsample_bytree': 0.8,
-        'subsample_for_bin': 200000,  # Number of samples for constructing bin
-        'min_split_gain': 0,  # lambda_l1, lambda_l2 and min_gain_to_split to regularization
-        'reg_alpha': 0.01,  # L1 regularization term on weights
-        'reg_lambda': 0.01,  # L2 regularization term on weights
+        'min_child_samples': 5,
         'nthread': 16,
         'verbose': 1,
     }
@@ -69,6 +59,8 @@ def train_model(df, predictors):
         'scale_pos_weight': 5
     }
 
+    print('len of df:', len(df))
+    df = df.sample(frac=1).reset_index(drop=True)
     (bst, best_iteration) = lgb_modelfit_nocv(params,
                                               df[:20000],
                                               df[20000:],
