@@ -50,15 +50,31 @@ logloss 为 0.52247，排名为 120.
 
 logloss 为 0.63559.
 
-## 07-18
+###07-18
 
 * ? ! 处理一下
+
+logloss 为 0.53042
+
+### 07-19
+
+重新调了几个参数：
+
+logloss 为 0.53228
+
+### 07-20
+
+* 加了两个 feature: 
+  * word mover's distance 
+  * edit distance.
+
+* lgb 模型参数 train test split
+* valid's binary_logloss: 0.679708
 
 ## TODO
 
 * log to file
 
-* feature importance
 
 * translation
 

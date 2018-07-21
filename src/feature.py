@@ -5,13 +5,12 @@ import pandas as pd
 from keras.preprocessing.text import Tokenizer
 
 from fuzzywuzzy import fuzz
-import editdistance 
+import editdistance
+from gensim.models import KeyedVectors
 
 from common import en_vec_path, es_vec_path, embed_size, max_features, maxlen
 
-import gensim
-
-word2vec_model = gensim.models.KeyedVectors.load_word2vec_format('../input/wiki.es.vec')
+w2v_model = KeyedVectors.load_word2vec_format('../input/wiki.es.vec')
 
 
 def get_coefs(word, *arr): return word, np.asarray(arr, dtype='float32')
@@ -53,6 +52,9 @@ def get_feature_vec(df, tokenizer):
         return row['word2vec_es0'].dot(row['word2vec_es1']) / (row['word2vec_es0'].dot(row['word2vec_es0'])**0.5 * row['word2vec_es1'].dot(row['word2vec_es1'])**0.5)
 
     df['word2vec_dot'] = df.apply(dot, axis=1)
+
+    df['wmd'] = df.apply(lambda row: w2v_model.wmdistance(
+        row['word2vec_es1'], row['word2vec_es0']), axis=1)
 
     def p_root(value, root):
 
