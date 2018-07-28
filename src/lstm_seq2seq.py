@@ -75,13 +75,13 @@ df_es_train = pd.read_csv(spanish_train_path, sep='\t', names=[
 df_es2en = pd.read_csv(unlabel_spanish_train_path,
                        sep='\t', names=['es', 'en'])
 
-temp = df_en_train[['en0', 'es0']].rename(columns={'en0':'en','es0':'es'})
+temp = df_en_train[['en0', 'es0']].rename(columns={'en0': 'en', 'es0': 'es'})
 df_es2en = pd.concat([df_es2en, temp], ignore_index=True)
-temp = df_en_train[['en1', 'es1']].rename(columns={'en1':'en','es1':'es'})
+temp = df_en_train[['en1', 'es1']].rename(columns={'en1': 'en', 'es1': 'es'})
 df_es2en = pd.concat([df_es2en, temp], ignore_index=True)
-temp = df_es_train[['en0', 'es0']].rename(columns={'en0':'en','es0':'es'})
+temp = df_es_train[['en0', 'es0']].rename(columns={'en0': 'en', 'es0': 'es'})
 df_es2en = pd.concat([df_es2en, temp], ignore_index=True)
-temp = df_es_train[['en1', 'es1']].rename(columns={'en1':'en','es1':'es'})
+temp = df_es_train[['en1', 'es1']].rename(columns={'en1': 'en', 'es1': 'es'})
 df_es2en = pd.concat([df_es2en, temp], ignore_index=True)
 
 for index, row in df_es2en.iterrows():
