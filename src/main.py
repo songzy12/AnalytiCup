@@ -15,7 +15,8 @@ if __name__ == '__main__':
                            sep='\t', names=['es', 'en'])
     df_test = pd.read_csv(test_path, sep='\t', names=['es0', 'es1'])
 
-    df_train = pd.concat([df_es_train, df_en_train], ignore_index=True)
+    #df_train = pd.concat([df_es_train, df_en_train], ignore_index=True)
+    df_train = df_es_train
 
     for df in [df_train, df_test]:
         df['es0'] = df.apply(
@@ -41,6 +42,7 @@ if __name__ == '__main__':
                  ['jaccard'] + ['edit_distance'] + ['wmd']
 
     best_model, best_iteration = train_model(df_train, predictors)
+
 
     feature_test = get_feature(df_test, tokenizer)
     sub = pd.DataFrame()
