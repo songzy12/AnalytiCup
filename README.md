@@ -117,6 +117,18 @@ LightGBM [Warning] No further splits with positive gain, best gain: -inf
 
 
 
+修了两个疑似 bug: wmd, dot
+
+```
+Model Report
+bst1.best_iteration:  2553
+binary_logloss: 0.27403268910115874
+Feature names: ['dot', 'minkowski_1', 'minkowski_2', 'ratio', 'partial_ratio', 'token_sort_ratio', 'token_set_ratio', 'jaccard', 'edit_distance', 'wmd']
+Feature importances: [23305, 17430, 12379, 17050, 14684, 16159, 16949, 11419, 8768, 19165]
+```
+
+
+
 * 可以训练四个 model 呢
 * 我们来试一下加一些 feature:
   * 5w1h
