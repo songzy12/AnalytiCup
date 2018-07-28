@@ -10,3 +10,8 @@ embed_size = 300
 max_features = 5500
 max_features = 4300  # this is for only es dataset
 maxlen = 54
+
+es_token_list = ['set_ratio', 'sort_ratio', 'no', 'ha', 'la', 'con', 'el', 'te', 'es', 'de', 'mi', 'o', 'los', 'hay', 'para', 'entre', 'tengo', 'otra',
+                 '?', 'cuando', 'lo', 'como', 'una', 'mis', 'esta', 'este', 'ti', 'eran', 'qué', 'he', 'esto', 'y', 'que', 'estoy', '.', '¿', 'me', 'ni', 'en', 'a']
+
+es_5w1h_list = ['cuándo', 'por qué', 'qué', 'como', 'puedo']

@@ -35,10 +35,11 @@ def preprocess(df_train, df_test):
 
 
 def get_feature_cnt(df):
-    for token in list("¡¿" + string.punctuation) + stopwords.words('spanish'):
+    
+    for token in es_token_list:
         df['token_' + token] = df.apply(
             lambda row: token in row['es0'] and token in row['es1'], axis=1)
-    for token in ['cuándo', 'por qué', 'qué', 'como', 'puedo', 'dónde', 'quien']: 
+    for token in es_5w1h_list: 
         df['5w1h_' + token] = df.apply(
             lambda row: token in row['es0'] and token in row['es1'], axis=1)
 

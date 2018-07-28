@@ -29,12 +29,12 @@ if __name__ == '__main__':
     predictors = ['dot'] + ['minkowski_' + str(i) for i in range(1, 3)] + ['wmd'] + \
                  ['ratio', 'partial_ratio', 'token_sort_ratio', 'token_set_ratio'] + ['jaccard'] +\
                  ['edit_distance'] + \
-                 ['token_' + token for token in list("¡¿" + string.punctuation) +
-                  stopwords.words('spanish')] + \
-                 ['5w1h_' + token for token in ['cuándo', 'por qué',
-                                                'qué', 'como', 'puedo', 'dónde', 'quien']]
+                 ['token_' + token for token in es_token_list] + \
+                 ['5w1h_' + token for token in es_5w1h_list]
 
-    best_model, best_iteration = train_model(df_train, predictors)
+    print(len(df_train))
+    best_model, best_iteration = train_model(
+        df_train, predictors, num_train=1300)
     best_model.save_model('../output/model_es.txt')
 
     best_model = load_model('../output/model_es.txt')

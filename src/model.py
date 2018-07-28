@@ -72,7 +72,7 @@ def lgb_modelfit_nocv(params, dtrain, dvalid, predictors, target='label', object
     return (bst1, bst1.best_iteration)
 
 
-def train_model(df, predictors):
+def train_model(df, predictors, num_train):
     params = {
         'scale_pos_weight': 5
     }
@@ -80,8 +80,8 @@ def train_model(df, predictors):
     print('len of df:', len(df))
     df = df.sample(frac=1).reset_index(drop=True)
     (bst, best_iteration) = lgb_modelfit_nocv(params,
-                                              df[:1200],
-                                              df[1200:],
+                                              df[:num_train],
+                                              df[num_train:],
                                               predictors,
                                               objective='binary',
                                               metrics='binary_logloss',
