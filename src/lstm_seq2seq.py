@@ -53,11 +53,12 @@ from __future__ import print_function
 from keras.models import Model
 from keras.layers import Input, LSTM, Dense
 import numpy as np
+import pandas as pd
 
 batch_size = 64  # Batch size for training.
 epochs = 100  # Number of epochs to train for.
 latent_dim = 256  # Latent dimensionality of the encoding space.
-num_samples = 77069  # Number of samples to train on.
+num_samples = 141269   # Number of samples to train on.
 
 # Vectorize the data.
 input_texts = []
