@@ -25,9 +25,9 @@ if __name__ == '__main__':
     # get_feature(df_train)
     # df_train.to_pickle('../output/df_es_train.pkl')
 
-    predictors = ['dot'] + ['minkowski_' + str(i) for i in range(1, 3)] + \
-                 ['ratio', 'partial_ratio', 'token_sort_ratio', 'token_set_ratio'] + \
-                 ['jaccard'] + ['edit_distance'] + ['wmd']
+    predictors = ['dot'] + ['minkowski_' + str(i) for i in range(1, 3)] + ['wmd'] + \
+                 ['ratio', 'partial_ratio', 'token_sort_ratio', 'token_set_ratio'] + ['jaccard'] +\
+                 ['edit_distance']
 
     # best_model, best_iteration = train_model(df_train, predictors)
     # best_model.save_model('../output/model_es.txt')

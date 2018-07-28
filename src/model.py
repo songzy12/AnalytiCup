@@ -10,16 +10,18 @@ def lgb_modelfit_nocv(params, dtrain, dvalid, predictors, target='label', object
     lgb_params = {
         'boosting_type': 'gbdt',
         'objective': objective,
-        'metric':metrics,
+        'metric': metrics,
         'learning_rate': 0.001,
         #'is_unbalance': 'true',  #because training data is unbalance (replaced with scale_pos_weight)
         'num_leaves': 63,  # we should let it be smaller than 2^(max_depth)
         'max_depth': -1,  # -1 means no limit
-        'min_child_samples': 2,  # Minimum number of data need in a child(min_data_in_leaf)
+        # Minimum number of data need in a child(min_data_in_leaf)
+        'min_child_samples': 2,
         'max_bin': 255,  # Number of bucketed bin for feature values
         'subsample': 0.9,  # Subsample ratio of the training instance.
         'subsample_freq': 10,  # frequence of subsample, <=0 means no enable
-        'colsample_bytree': 0.8,  # Subsample ratio of columns when constructing each tree.
+        # Subsample ratio of columns when constructing each tree.
+        'colsample_bytree': 0.8,
         'subsample_for_bin': 200000,  # Number of samples for constructing bin
         'min_split_gain': 0,  # lambda_l1, lambda_l2 and min_gain_to_split to regularization
         'reg_alpha': 0.5,  # L1 regularization term on weights
@@ -67,7 +69,6 @@ def lgb_modelfit_nocv(params, dtrain, dvalid, predictors, target='label', object
     # feature importances
     print('Feature importances:', list(bst1.feature_importance()))
 
-
     return (bst1, bst1.best_iteration)
 
 
@@ -88,6 +89,7 @@ def train_model(df, predictors):
                                               verbose_eval=True,
                                               num_boost_round=10000)
     return bst, best_iteration
+
 
 def load_model(model_file):
     return lgb.Booster(model_file=model_file)
