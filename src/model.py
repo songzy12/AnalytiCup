@@ -1,18 +1,19 @@
 import lightgbm as lgb
 import gc
+from common import *
 
 
-def lgb_modelfit_nocv(params, dtrain, dvalid, predictors, target='label', objective='binary', metrics='binary_logloss',
-                      feval=None, early_stopping_rounds=50, num_boost_round=3000, verbose_eval=10, categorical_features=None):
+def lgb_model(dtrain, dvalid, predictors, target, objective, metrics):
+
     # parameters: https://github.com/Microsoft/LightGBM/blob/master/docs/Experiments.rst
     # https://github.com/Microsoft/LightGBM/blob/master/docs/Parameters.rst
 
     lgb_params = {
-        'boosting_type': 'gbdt',
         'objective': objective,
         'metric': metrics,
+        'scale_pos_weight': 5,
+        'boosting_type': 'gbdt',
         'learning_rate': 0.001,
-        #'is_unbalance': 'true',  #because training data is unbalance (replaced with scale_pos_weight)
         'num_leaves': 63,  # we should let it be smaller than 2^(max_depth)
         'max_depth': -1,  # -1 means no limit
         # Minimum number of data need in a child(min_data_in_leaf)
@@ -30,17 +31,15 @@ def lgb_modelfit_nocv(params, dtrain, dvalid, predictors, target='label', object
         'verbose': 1,
     }
 
-    lgb_params.update(params)
-
     print("preparing validation datasets")
 
     xgtrain = lgb.Dataset(dtrain[predictors].values, label=dtrain[target].values,
                           feature_name=predictors,
-                          categorical_feature=categorical_features
+                          categorical_feature=None
                           )
     xgvalid = lgb.Dataset(dvalid[predictors].values, label=dvalid[target].values,
                           feature_name=predictors,
-                          categorical_feature=categorical_features
+                          categorical_feature=None
                           )
     del dtrain
     del dvalid
@@ -53,10 +52,10 @@ def lgb_modelfit_nocv(params, dtrain, dvalid, predictors, target='label', object
                      valid_sets=[xgvalid],
                      valid_names=['valid'],
                      evals_result=evals_results,
-                     num_boost_round=num_boost_round,
-                     early_stopping_rounds=early_stopping_rounds,
+                     num_boost_round=10000,
+                     early_stopping_rounds=30,
                      verbose_eval=10,
-                     feval=feval)
+                     feval=None)
 
     print("\nModel Report")
     print("bst1.best_iteration: ", bst1.best_iteration)
@@ -72,22 +71,14 @@ def lgb_modelfit_nocv(params, dtrain, dvalid, predictors, target='label', object
     return (bst1, bst1.best_iteration)
 
 
-def train_model(df, predictors, num_train):
-    params = {
-        'scale_pos_weight': 5
-    }
+def train_model(df, predictors, target, num_train):
+    objective = 'binary'
+    metrics = 'binary_logloss'
 
     print('len of df:', len(df))
-    df = df.sample(frac=1).reset_index(drop=True)
-    (bst, best_iteration) = lgb_modelfit_nocv(params,
-                                              df[:num_train],
-                                              df[num_train:],
-                                              predictors,
-                                              objective='binary',
-                                              metrics='binary_logloss',
-                                              early_stopping_rounds=30,
-                                              verbose_eval=True,
-                                              num_boost_round=10000)
+
+    (bst, best_iteration) = lgb_model(df[:num_train], df[
+        num_train:], predictors, target, objective, metrics)
     return bst, best_iteration
 
 

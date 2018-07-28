@@ -119,10 +119,6 @@ LightGBM [Warning] No further splits with positive gain, best gain: -inf
 
 修了两个疑似 bug: wmd, dot
 
-```
-
-```
-
 
 
 把 word2vec 的部分拿出来是为了不想算两遍
@@ -131,14 +127,15 @@ LightGBM [Warning] No further splits with positive gain, best gain: -inf
 
 
 
+Model Report
+bst1.best_iteration:  2100
+binary_logloss: 0.27282968232044175
+
+
+
+## TODO
+
 * 西班牙语和英语分别 ensemble 
 * 西班牙语到英语的  translation
 * 西班牙语传统模型的 ensemble
 * 西班牙语的神经网络模型
-
-## TODO
-
-* translation
-
-
-* neural networks
