@@ -1,12 +1,13 @@
 from math import *
+import string
 
 import numpy as np
 import pandas as pd
 from keras.preprocessing.text import Tokenizer
 
+from gensim.models import KeyedVectors
 from fuzzywuzzy import fuzz
 import editdistance
-from gensim.models import KeyedVectors
 
 from common import en_vec_path, es_vec_path, embed_size, max_features, maxlen
 
@@ -71,14 +72,14 @@ def get_feature_vec(df, tokenizer):
     for i in range(1, 3):
         df['word2vec_minkowski_' + str(i)] = df.apply(lambda row: minkowski_distance(
             row['word2vec_es1'], row['word2vec_es0'], i), axis=1)
-    
-    df['wmd'] = df.apply(lambda row: word2vec_model.wmdistance(
-        row['es0'].split(), row['es1'].split()), axis=1)
-
     return df
 
 
 def get_feature_edit_distance(df):
+    for token in "¡¿" + string.punctuation:
+        df[token] = df.apply(lambda row: token in row[
+                             'es0'] and token in row['es1'])
+
     df['ratio'] = df.apply(lambda row: fuzz.ratio(
         row['seq_es0'], row['seq_es1']), axis=1)
     df['partial_ratio'] = df.apply(lambda row: fuzz.partial_ratio(
@@ -88,7 +89,7 @@ def get_feature_edit_distance(df):
     df['token_set_ratio'] = df.apply(lambda row: fuzz.token_set_ratio(row[
                                      'seq_es0'], row['seq_es1']), axis=1)
     df['edit_distance'] = df.apply(lambda row: editdistance.eval(row[
-                                     'seq_es0'], row['seq_es1']), axis=1)
+        'seq_es0'], row['seq_es1']), axis=1)
     return df
 
 

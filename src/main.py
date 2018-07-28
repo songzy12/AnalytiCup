@@ -1,3 +1,5 @@
+import string
+
 import pandas as pd
 import numpy as np
 
@@ -18,19 +20,18 @@ if __name__ == '__main__':
     #df_train = pd.concat([df_es_train, df_en_train], ignore_index=True)
     df_train = df_es_train
 
+    # preprocess
     for df in [df_train, df_test]:
-        df['es0'] = df.apply(
-            lambda row: row['es0'].replace('¡', ' ¡ '), axis=1)
-        df['es0'] = df.apply(
-            lambda row: row['es0'].replace('¿', ' ¿ '), axis=1)
-        df['es0'] = df.apply(
-            lambda row: row['es0'].replace('\'', ' \' '), axis=1)
-        df['es1'] = df.apply(
-            lambda row: row['es1'].replace('¡', ' ¡ '), axis=1)
-        df['es1'] = df.apply(
-            lambda row: row['es1'].replace('¿', ' ¿ '), axis=1)
-        df['es1'] = df.apply(
-            lambda row: row['es1'].replace('\'', ' \' '), axis=1)
+        for col in ['es0', 'es1']:
+            for token in "¡¿" + string.punctuation:
+                df[col] = df[col].apply(lambda row: row.replace(
+                    token, ' ' + token + ' ').lower())
+
+    for df in [df_train]:
+        for col in ['en0', 'en1']:
+            for token in "¡¿" + string.punctuation:
+                df[col] = df[col].apply(lambda row: row.replace(
+                    token, ' ' + token + ' ').lower())
 
     tokenizer = get_tokenizer(
         [df_train['es0'], df_train['es1'], df_test['es0'], df_test['es1']])
@@ -44,7 +45,6 @@ if __name__ == '__main__':
 
     best_model, best_iteration = train_model(df_train, predictors)
     best_model.save_model('../output/model_es.txt')
-
 
     feature_test = get_feature(df_test, tokenizer)
     feature_test.to_pickle('../output/df_test.pkl')

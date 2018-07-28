@@ -67,19 +67,63 @@ logloss 为 0.53228
 * 加了两个 feature: 
   * word mover's distance 
   * edit distance.
-
-* lgb 模型参数 train test split
+* lgb 模型参数: df[:20000]
 * valid's binary_logloss: 0.679708
+
+log loss: 0.66980
+
+所以这个 valid 还是很准的。
+
+## 07-27
+
+所以当时 loss 最低的是什么设定来着？
+
+* max_features 5500 -> 3000: 0.679708 -> 0.68103
+* 'min_child_samples': 5,  'reg_alpha': 0.5,  'reg_lambda': 0.5:  0.670675
+
+这些都不是关键，关键是什么呢？
+
+* df[:20000] -> df[:1200]: 0.670675 -> 0.5902
+
+所以说这个翻译的数据不能直接用的。
+
+* df_train = df_es_train: 0.368931
+
+我的天简直效果爆炸。我们来提交一发吧。
+
+emmm 为什么提交之后只有 0.54815
+
+## 07-28
+
+还是先把各 feature 的比重打印出来吧。
+
+<https://github.com/Microsoft/LightGBM/blob/master/examples/python-guide/advanced_example.py>
+
+```
+[('edit_distance', 13075), ('jaccard', 13667), ('word2vec_minkowski_2', 14023), ('ratio', 17136), ('token_sort_ratio', 18022), ('word2vec_minkowski_1', 19013), ('token_set_ratio', 21037), ('partial_ratio', 22008), ('word2vec_dot', 23677), ('wmd', 25582)]
+```
+
+
+
+LightGBM [Warning] No further splits with positive gain, best gain: -inf
+
+'min_child_samples': 2,  # Minimum number of data need in a child(min_data_in_leaf)
+
+### preprocess
+
+* .lower()：全部字符大写转小写
+* string.punctuation：全部标点前后加空格（不仅仅是倒写的 ?!）
+* tokenize 后就没有标点信息 <https://keras.io/preprocessing/text/>，所以加一个 feature
+
+
+
+* 可以训练四个 model 呢
+* 我们来试一下加一些 feature:
+  * 5w1h
 
 ## TODO
 
-* log to file
-
-
 * translation
 
-* more features
-
-  
 
 * neural networks

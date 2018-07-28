@@ -1,8 +1,8 @@
-.ipynb_checkpoints
-.idea
 config.py
 input/
 output/
+.ipynb_checkpoints
+.idea
 *.ipynb
 *.h5
 *.swp
