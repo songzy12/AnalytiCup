@@ -50,13 +50,17 @@ http://www.manythings.org/anki/
 '''
 from __future__ import print_function
 
+import string
+
 from keras.models import Model
 from keras.layers import Input, LSTM, Dense
 import numpy as np
 import pandas as pd
 
+from nltk.tokenize import word_tokenize
+
+epochs = 20  # Number of epochs to train for.
 batch_size = 64  # Batch size for training.
-epochs = 100  # Number of epochs to train for.
 latent_dim = 256  # Latent dimensionality of the encoding space.
 num_samples = 141269   # Number of samples to train on.
 
@@ -76,6 +80,8 @@ df_es_train = pd.read_csv(spanish_train_path, sep='\t', names=[
 df_es2en = pd.read_csv(unlabel_spanish_train_path,
                        sep='\t', names=['es', 'en'])
 
+df_test = pd.read_csv(test_path, sep='\t', names=['es0', 'es1'])                       
+
 temp = df_en_train[['en0', 'es0']].rename(columns={'en0': 'en', 'es0': 'es'})
 df_es2en = pd.concat([df_es2en, temp], ignore_index=True)
 temp = df_en_train[['en1', 'es1']].rename(columns={'en1': 'en', 'es1': 'es'})
@@ -90,6 +96,8 @@ for index, row in df_es2en.iterrows():
     # We use "tab" as the "start sequence" character
     # for the targets, and "\n" as "end sequence" character.
     target_text = '\t' + target_text + '\n'
+    for token in "¡¿" + string.punctuation:
+        target_text = target_text.replace(token, ' ' + token + ' ').lower()
     input_texts.append(input_text)
     target_texts.append(target_text)
     for char in input_text:
@@ -98,6 +106,7 @@ for index, row in df_es2en.iterrows():
     for char in target_text:
         if char not in target_characters:
             target_characters.add(char)
+
 
 input_characters = sorted(list(input_characters))
 target_characters = sorted(list(target_characters))
@@ -237,7 +246,7 @@ def decode_sequence(input_seq):
     return decoded_sentence
 
 
-for seq_index in range(100):
+for seq_index in range(10):
     # Take one sequence (part of the training set)
     # for trying out decoding.
     input_seq = encoder_input_data[seq_index: seq_index + 1]
@@ -245,3 +254,17 @@ for seq_index in range(100):
     print('-')
     print('Input sentence:', input_texts[seq_index])
     print('Decoded sentence:', decoded_sentence)
+
+
+def encode(input_text):
+    result = np.zeros( (1, max_encoder_seq_length, num_encoder_tokens), dtype='float32')
+    for t, char in enumerate(input_text):
+        if char not in input_token_index:
+            continue
+        result[0, t, input_token_index[char]] = 1.
+    return result
+
+df_test['en0'] = df_test.apply(lambda row: decode_sequence(encode(row['es0'])), axis=1)
+df_test['en1'] = df_test.apply(lambda row: decode_sequence(encode(row['es1'])), axis=1)
+
+df_test.to_pickle('../output/df_en_test.pkl')
