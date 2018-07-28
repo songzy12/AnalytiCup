@@ -29,7 +29,7 @@ if __name__ == '__main__':
     predictors = ['dot'] + ['minkowski_' + str(i) for i in range(1, 3)] + ['wmd'] + \
                  ['ratio', 'partial_ratio', 'token_sort_ratio', 'token_set_ratio'] + ['jaccard'] +\
                  ['edit_distance'] + \
-                 ['token_' + token for token in es_token_list] + \
+                 ['stop_' + token for token in es_stop_list] + \
                  ['5w1h_' + token for token in es_5w1h_list]
     target = 'label'
 
