@@ -40,20 +40,21 @@ def get_feature_cnt(df):
             lambda row: token in row['es0'] and token in row['es1'], axis=1)
 
 
+def get_coefs(word, *arr): return word, np.asarray(arr, dtype='float32')
+
+w2v_model = KeyedVectors.load_word2vec_format('../input/wiki.es.vec')
+with open(es_vec_path, encoding="utf8") as f:
+    f.readline()
+    embeddings_index = dict(get_coefs(*o.rstrip().rsplit(' ')) for o in f)
+
+    all_embs = np.stack(embeddings_index.values())
+    emb_mean, emb_std = all_embs.mean(), all_embs.std()
+
+
 def get_feature_embedding(df):
-    def get_coefs(word, *arr): return word, np.asarray(arr, dtype='float32')
-
-    w2v_model = KeyedVectors.load_word2vec_format('../input/wiki.es.vec')
-    with open(es_vec_path, encoding="utf8") as f:
-        f.readline()
-        embeddings_index = dict(get_coefs(*o.rstrip().rsplit(' ')) for o in f)
-
-        all_embs = np.stack(embeddings_index.values())
-        emb_mean, emb_std = all_embs.mean(), all_embs.std()
-
     for col in ['es0', 'es1']:
         df['word2vec_' + col] = df.apply(lambda row: (sum([embeddings_index.get(x, np.random.normal(emb_mean, emb_std, (embed_size))) for x in row[
-            'seq_' + col]]) / len(row['seq_' + col])) if len(row['seq_' + col]) else emb_mean, axis=1)
+            'seq_' + col]]) / len(row['seq_' + col])) if len(row['seq_' + col]) else np.random.normal(emb_mean, emb_std, (embed_size)), axis=1)
 
     df['dot'] = df.apply(lambda row: row['word2vec_es0'].dot(row['word2vec_es1']) / (
         row['word2vec_es0'].dot(row['word2vec_es0'])**0.5 * row['word2vec_es1'].dot(row['word2vec_es1'])**0.5), axis=1)

@@ -4,7 +4,7 @@ import pandas as pd
 import numpy as np
 
 from feature import preprocess, get_feature
-from model import train_model
+from model import train_model, load_model
 from common import *
 
 if __name__ == '__main__':
@@ -22,21 +22,21 @@ if __name__ == '__main__':
 
     preprocess(df_train, df_test)
 
-    get_feature(df_train)
-    df_train.to_pickle('../output/df_es_train.pkl')
+    # get_feature(df_train)
+    # df_train.to_pickle('../output/df_es_train.pkl')
 
     predictors = ['dot'] + ['minkowski_' + str(i) for i in range(1, 3)] + \
                  ['ratio', 'partial_ratio', 'token_sort_ratio', 'token_set_ratio'] + \
                  ['jaccard'] + ['edit_distance'] + ['wmd']
 
-    best_model, best_iteration = train_model(df_train, predictors)
-    best_model.save_model('../output/model_es.txt')
+    # best_model, best_iteration = train_model(df_train, predictors)
+    # best_model.save_model('../output/model_es.txt')
 
+    best_model = load_model('../output/model_es.txt')
     get_feature(df_test)
     df_test.to_pickle('../output/df_test.pkl')
 
     sub = pd.DataFrame()
-    sub['result'] = best_model.predict(
-        df_test[predictors], num_iteration=best_iteration)
+    sub['result'] = best_model.predict(df_test[predictors])
     sub.to_csv('../output/submission.txt', index=False,
                header=False, float_format='%.9f')

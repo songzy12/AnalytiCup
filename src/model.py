@@ -88,3 +88,6 @@ def train_model(df, predictors):
                                               verbose_eval=True,
                                               num_boost_round=10000)
     return bst, best_iteration
+
+def load_model(model_file):
+    return lgb.Booster(model_file=model_file)
