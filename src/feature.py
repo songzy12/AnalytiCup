@@ -102,11 +102,11 @@ def get_feature_jaccard(df):
 
 
 def get_feature(df, tokenizer):
-
     df['seq_es0'] = tokenizer.texts_to_sequences(df['es0'])
     df['seq_es1'] = tokenizer.texts_to_sequences(df['es1'])
 
     df = get_feature_vec(df, tokenizer)
     df = get_feature_edit_distance(df)
     df = get_feature_jaccard(df)
+
     return df
