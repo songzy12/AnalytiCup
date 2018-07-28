@@ -36,15 +36,19 @@ if __name__ == '__main__':
         [df_train['es0'], df_train['es1'], df_test['es0'], df_test['es1']])
 
     df_train = get_feature(df_train, tokenizer)
+    df_train.to_pickle('../output/df_es_train.pkl')
 
     predictors = ['word2vec_dot'] + ['word2vec_minkowski_' + str(i) for i in range(1, 3)] + \
                  ['ratio', 'partial_ratio', 'token_sort_ratio', 'token_set_ratio'] + \
                  ['jaccard'] + ['edit_distance'] + ['wmd']
 
     best_model, best_iteration = train_model(df_train, predictors)
+    best_model.save_model('../output/model_es.txt')
 
 
     feature_test = get_feature(df_test, tokenizer)
+    feature_test.to_pickle('../output/df_test.pkl')
+
     sub = pd.DataFrame()
     sub['result'] = best_model.predict(
         feature_test[predictors], num_iteration=best_iteration)
