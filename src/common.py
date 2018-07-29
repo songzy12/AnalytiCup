@@ -15,3 +15,8 @@ es_stop_list = ['no', 'ha', 'con', 'el', 'la', 'ti', 'o', 'te', 'para', '?', 'mi
                  'es', 'mis', 'los', 'tengo', 'este', 'estoy', 'me', 'eran', 'qué', 'entre', 'cuando', 'en', 'de', '.', 'esto', 'que', '¿']
 
 es_5w1h_list = ['cuándo', 'por qué', 'qué', 'como', 'puedo']
+
+en_stop_list = []
+en_5w1h_list = ['what', 'why', 'how', 'when', 'who', 'which']
+
+en = True

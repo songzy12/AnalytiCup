@@ -131,11 +131,18 @@ Model Report
 bst1.best_iteration:  2100
 binary_logloss: 0.27282968232044175
 
+logloss: 0.48075
 
+## 07-29
+
+Seq2Seq 训好了。然而并没有太多心思把它们整在一起。
 
 ## TODO
 
-* 西班牙语和英语分别 ensemble 
-* 西班牙语到英语的  translation
-* 西班牙语传统模型的 ensemble
 * 西班牙语的神经网络模型
+* 西班牙语到英语的  translation
+
+
+
+* 西班牙语模型的 ensemble
+* 还要保证这个模型切换数据集能直接跑才行

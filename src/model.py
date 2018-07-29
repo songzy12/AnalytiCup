@@ -71,7 +71,11 @@ def lgb_model(dtrain, dvalid, predictors, target, objective, metrics):
     return (bst1, bst1.best_iteration)
 
 
-def train_model(df, predictors, target, num_train):
+def train_model(df, predictors, target, en):
+    if not en:
+        num_train = 1300
+    else:
+        num_train = 18000
     objective = 'binary'
     metrics = 'binary_logloss'
 
