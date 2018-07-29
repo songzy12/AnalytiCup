@@ -74,7 +74,7 @@ log loss: 0.66980
 
 所以这个 valid 还是很准的。
 
-## 07-27
+###07-27
 
 所以当时 loss 最低的是什么设定来着？
 
@@ -93,7 +93,7 @@ log loss: 0.66980
 
 emmm 为什么提交之后只有 0.54815
 
-## 07-28
+###07-28
 
 还是先把各 feature 的比重打印出来吧。
 
@@ -109,7 +109,7 @@ LightGBM [Warning] No further splits with positive gain, best gain: -inf
 
 'min_child_samples': 2,  # Minimum number of data need in a child(min_data_in_leaf)
 
-### preprocess
+#### preprocess
 
 * .lower()：全部字符大写转小写
 * string.punctuation：全部标点前后加空格（不仅仅是倒写的 ?!）
@@ -133,7 +133,7 @@ binary_logloss: 0.27282968232044175
 
 logloss: 0.48075
 
-## 07-29
+### 07-29
 
 Seq2Seq 训好了。然而并没有太多心思把它们整在一起。
 
