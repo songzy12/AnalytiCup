@@ -62,7 +62,6 @@ from nltk.tokenize import word_tokenize
 epochs = 20  # Number of epochs to train for.
 batch_size = 64  # Batch size for training.
 latent_dim = 256  # Latent dimensionality of the encoding space.
-num_samples = 141269   # Number of samples to train on.
 
 # Vectorize the data.
 input_texts = []
@@ -98,6 +97,8 @@ for index, row in df_es2en.iterrows():
     target_text = '\t' + target_text + '\n'
     for token in "¡¿" + string.punctuation:
         target_text = target_text.replace(token, ' ' + token + ' ').lower()
+    if input_text in input_texts:
+        continue
     input_texts.append(input_text)
     target_texts.append(target_text)
     for char in input_text:
@@ -174,7 +175,7 @@ model.compile(optimizer='rmsprop', loss='categorical_crossentropy')
 model.fit([encoder_input_data, decoder_input_data], decoder_target_data,
           batch_size=batch_size,
           epochs=epochs,
-          validation_split=0.2)
+          validation_split=0.1)
 # Save model
 model.save('s2s.h5')
 
