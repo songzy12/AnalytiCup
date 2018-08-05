@@ -17,8 +17,8 @@ if __name__ == '__main__':
 
     # df_es2en = pd.read_csv(unlabel_spanish_train_path,
     #                        sep='\t', names=['es', 'en'])
-    # df_test = pd.read_csv(test_path, sep='\t', names=['es0', 'es1'])
-    df_test = pd.read_pickle('../output/df_en_test.pkl')
+    df_test = pd.read_csv(test_path, sep='\t', names=['es0', 'es1'])
+    # df_test = pd.read_pickle('../output/df_en_test.pkl')
 
     if en:
         df_train = df_en_train
@@ -49,10 +49,10 @@ if __name__ == '__main__':
     best_model = load_model(
         '../output/model_es.txt' if not en else '../output/model_en.txt')
     get_feature(df_test, en)
-    df_test.to_pickle('../output/df_en_test.pkl')
+    df_test.to_pickle('../output/df_es_test.pkl')
     # df_test = pd.read_pickle('../output/df_test.pkl')
 
     sub = pd.DataFrame()
     sub['result'] = best_model.predict(df_test[predictors])
-    sub.to_csv('../output/submission_en.txt', index=False,
+    sub.to_csv('../output/submission_es.txt', index=False,
                header=False, float_format='%.9f')

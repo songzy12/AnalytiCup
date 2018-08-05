@@ -1,3 +1,9 @@
+## Result
+
+Rank 53/1027.
+
+<https://tianchi.aliyun.com/competition/rankingList.htm?season=1&raceId=231661&pageIndex=3>
+
 ## Workflow
 
 ### 07-02
