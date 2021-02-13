@@ -1,6 +1,5 @@
 import lightgbm as lgb
 import gc
-from common import *
 
 
 def lgb_model(dtrain, dvalid, predictors, target, objective, metrics):

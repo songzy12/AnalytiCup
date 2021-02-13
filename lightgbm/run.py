@@ -1,12 +1,8 @@
-import string
-
 import pandas as pd
-import numpy as np
-from nltk.corpus import stopwords
 
 from feature import preprocess, get_feature
 from model import train_model, load_model
-from common import *
+from common import english_train_path, spanish_train_path, test_path, en, en_stop_list, es_stop_list, en_5w1h_list, es_5w1h_list
 
 if __name__ == '__main__':
     df_en_train = pd.read_csv(english_train_path, sep='\t', names=[

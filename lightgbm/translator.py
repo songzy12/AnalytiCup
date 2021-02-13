@@ -57,7 +57,7 @@ from keras.layers import Input, LSTM, Dense
 import numpy as np
 import pandas as pd
 
-from nltk.tokenize import word_tokenize
+from common import english_train_path, spanish_train_path, unlabel_spanish_train_path, test_path
 
 epochs = 20  # Number of epochs to train for.
 batch_size = 64  # Batch size for training.
@@ -69,7 +69,6 @@ target_texts = []
 input_characters = set()
 target_characters = set()
 
-from common import *
 
 df_en_train = pd.read_csv(english_train_path, sep='\t', names=[
                           'en0', 'es0', 'en1', 'es1', 'label'])
@@ -79,7 +78,7 @@ df_es_train = pd.read_csv(spanish_train_path, sep='\t', names=[
 df_es2en = pd.read_csv(unlabel_spanish_train_path,
                        sep='\t', names=['es', 'en'])
 
-df_test = pd.read_csv(test_path, sep='\t', names=['es0', 'es1'])                       
+df_test = pd.read_csv(test_path, sep='\t', names=['es0', 'es1'])
 
 temp = df_en_train[['en0', 'es0']].rename(columns={'en0': 'en', 'es0': 'es'})
 df_es2en = pd.concat([df_es2en, temp], ignore_index=True)
@@ -258,14 +257,18 @@ for seq_index in range(10):
 
 
 def encode(input_text):
-    result = np.zeros( (1, max_encoder_seq_length, num_encoder_tokens), dtype='float32')
+    result = np.zeros((1, max_encoder_seq_length,
+                       num_encoder_tokens), dtype='float32')
     for t, char in enumerate(input_text):
         if char not in input_token_index:
             continue
         result[0, t, input_token_index[char]] = 1.
     return result
 
-df_test['en0'] = df_test.apply(lambda row: decode_sequence(encode(row['es0'])), axis=1)
-df_test['en1'] = df_test.apply(lambda row: decode_sequence(encode(row['es1'])), axis=1)
+
+df_test['en0'] = df_test.apply(
+    lambda row: decode_sequence(encode(row['es0'])), axis=1)
+df_test['en1'] = df_test.apply(
+    lambda row: decode_sequence(encode(row['es1'])), axis=1)
 
 df_test.to_pickle('../output/df_en_test.pkl')

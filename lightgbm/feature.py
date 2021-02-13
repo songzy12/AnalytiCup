@@ -1,8 +1,6 @@
-from math import *
 import string
 
 import numpy as np
-import pandas as pd
 
 from nltk.corpus import stopwords
 from nltk.tokenize import word_tokenize
@@ -12,7 +10,7 @@ from gensim.models import KeyedVectors
 from fuzzywuzzy import fuzz
 import editdistance
 
-from common import *
+from common import es_5w1h_list, en_5w1h_list, es_stop_list, en_stop_list, es_vec_path, embed_size, en
 
 
 def preprocess(df_train, df_test, en=False):
@@ -52,6 +50,7 @@ def get_feature_cnt(df, en):
 
 
 def get_coefs(word, *arr): return word, np.asarray(arr, dtype='float32')
+
 
 w2v_model = KeyedVectors.load_word2vec_format(
     '../input/wiki.es.vec' if not en else '../input/wiki.en.vec')
